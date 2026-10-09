@@ -1,0 +1,30 @@
+export const IMG = {
+  heroBottle:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/d2a224d38b6f099029cfee043c9524170cb217a56aeecce0115ab5d535205067.jpeg",
+  preform:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/4b7220596f63f5d621204ca0db101eafa46dc87b2d2cfbf2194303134b14a4c0.jpeg",
+  material:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/f41e4f31703169b0f2f813f049c6f4ffb5d23a1a8e9233dafd54c48ac408bf80.jpeg",
+  lineup:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/4698f4d7575af004045a1b5003bc387e8e1ac8a4167d2953f84de70ddff2c692.jpeg",
+  decomposition:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/7d618b93019713b521c3dc36eb3d61b03ea792ec72ebdfd6a6c69f7f8ee4d6b2.jpeg",
+  lab:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/e1e00625b0fe2db73202590cbde0d902c44ecc32b6d6f1b7567b89473b0bad97.jpeg",
+  caps:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/217e06cf535ff00b848f8ca9aff94322836e0fdd7be47b085c8f060f2ec06bce.jpeg",
+  water:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/3c33001baa9a57f825b7ee3ff55fd31dd9e808bf2b084ade9b180d4397b9e12b.jpeg",
+  cosmetic:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/3593b5413d144086e1111d2511b91a3e5bde958f95f89e314942b9ef7845475d.jpeg",
+  feedstock:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/6ab175e7591b793bc065aa494d0b4833b6c274e4c9345cd8a54bad5575ff3c79.jpeg",
+  pharma:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/1a03ff2e5b39ed1f2482599f59371c616b1f2c8ed4d6a3376be6f145e635fe81.jpeg",
+  household:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/e18387c668595bce167dfa28b688a1bc0a3e295163ac74c06f43e0f526d00f92.jpeg",
+  edible:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/571fc039f5136a20dea32f021697a39b973d2508c2fc7c1bf8f1dd74f6c3c30d.jpeg",
+  refill:
+    "https://static.prod-images.emergentagent.com/jobs/f6f4e070-7b87-4545-8de3-eee2e2498641/images/b0bfeae1c3881f1c494bb9e00c5b653999832759f694ac762918ba18615243c6.jpeg",
+};
