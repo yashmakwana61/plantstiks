@@ -1,0 +1,77 @@
+# Production compose: MongoDB (auth) + FastAPI backend + Nginx (static frontend + /api proxy).
+# Frontend is built OUTSIDE compose: `cd frontend && REACT_APP_BACKEND_URL=https://api.plantstiksbottle.in npm run build`
+# then nginx serves ./frontend/build. On Hostinger shared hosting, upload frontend/build/* to public_html
+# instead and point REACT_APP_BACKEND_URL at the VPS API; only mongo+backend run on the VPS.
+#
+# Required host env (never commit): see backend/.env.production.example
+#   MONGO_ROOT_USER, MONGO_ROOT_PASSWORD, MONGO_URL (with creds), DB_NAME,
+#   JWT_SECRET (32+ random chars), CORS_ORIGINS (https://www.plantstiksbottle.in),
+#   ADMIN_EMAIL, ADMIN_PASSWORD
+#
+# Up:   docker compose -f docker-compose.prod.yml --env-file backend/.env.production up -d --build
+# Logs: docker compose -f docker-compose.prod.yml logs -f backend
+# Backup: docker exec plantstiks-mongo-prod mongodump --username $MONGO_ROOT_USER --password $MONGO_ROOT_PASSWORD --authenticationDatabase admin --out /data/backup/$(date +%F)
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: plantstiks-mongo-prod
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:?set MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME:-plantstiks}
+    volumes:
+      - plantstiks-mongo-prod-data:/data/db
+    # NEVER publish 27017 publicly. Backend reaches mongo via internal DNS.
+    expose:
+      - "27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./backend
+    image: plantstiks-backend:prod
+    container_name: plantstiks-backend-prod
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.production
+    environment:
+      # Internal mongo DNS; overrides any localhost URL in the env file.
+      MONGO_URL: mongodb://${MONGO_ROOT_USER:?set MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD}@mongo:27017/${DB_NAME:-plantstiks}?authSource=admin
+      ENV: production
+      UVICORN_WORKERS: ${UVICORN_WORKERS:-2}
+    expose:
+      - "8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: plantstiks-nginx-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      # Enable after certbot or Hostinger TLS terminates: uncomment + mount certs.
+      # - "443:443"
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html:ro
+      - ./nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  plantstiks-mongo-prod-data:
